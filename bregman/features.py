@@ -86,13 +86,13 @@ __email__ = 'mcasey@dartmouth.edu'
 
 from matplotlib import pylab as P
 import numpy as np
-import error
 import glob
-import plca
-from sound import *
-from audiodb import *
 import pdb
-from features_base import Features, feature_plot, feature_scale
+from bregman import error
+from bregman import plca
+from bregman.features_base import Features, feature_plot, feature_scale
+from bregman.audiodb import *
+from bregman.sound import *
 
 # All features exposed as separate classes
 
