@@ -1,32 +1,32 @@
 import os,sys,glob
-import pylab
+from matplotlib import pylab
 import bregman
 import os.path
 
-from features import *
-from segment import *
-from audiodb import *
-from testsignal import *
-from psychoacoustics import *
-from tuning import *
-from sound import *
-from plca import *
-from distance import *
-from classifier import *
-from error import *
-from beat import *
+from bregman.features import *
+from bregman.segment import *
+from bregman.audiodb import *
+from bregman.testsignal import *
+from bregman.psychoacoustics import *
+from bregman.tuning import *
+from bregman.sound import *
+from bregman.plca import *
+from bregman.distance import *
+from bregman.classifier import *
+from bregman.error import *
+from bregman.beat import *
 
-import features
-import segment
-import testsignal
-import psychoacoustics
-import tuning
-import sound
-import plca
-import distance
-import classifier
-import error
-import beat
+from bregman import features
+from bregman import segment
+from bregman import testsignal
+from bregman import psychoacoustics
+from bregman import tuning
+from bregman import sound
+from bregman import plca
+from bregman import distance
+from bregman import classifier
+from bregman import error
+from bregman import beat
 
 sep = os.path.sep
 bregman_data_root = os.path.split(bregman.__file__)[0]

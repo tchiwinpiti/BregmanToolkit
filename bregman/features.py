@@ -84,7 +84,7 @@ __copyright__ = "Copyright (C) 2010  Michael Casey, Dartmouth College, All Right
 __license__ = "GPL Version 2.0 or Higher"
 __email__ = 'mcasey@dartmouth.edu'
 
-import pylab as P
+from matplotlib import pylab as P
 import numpy as np
 import error
 import glob

@@ -31,7 +31,7 @@ import sound
 import audiodb
 import testsignal
 
-import pylab
+from matplotlib import pylab
 import scipy.stats
 
 import sys

@@ -10,7 +10,7 @@ Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 http://creativecommons.org/licenses/by-nc/4.0/
 """
 
-import pylab as P
+from matplotlib import pylab as P
 import numpy as np
 import glob, sys, pdb
 import bregman

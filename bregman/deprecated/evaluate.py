@@ -10,7 +10,7 @@ __email__ = 'mcasey@dartmouth.edu'
 import distance
 import error
 import audiodb
-import pylab
+from matplotlib import pylab
 import pickle
 import sys
 import tempfile

@@ -11,7 +11,7 @@ __email__ = 'mcasey@dartmouth.edu'
 # AudioDB libraries
 import glob
 import error
-import pylab
+from matplotlib import pylab
 import features
 
 try:

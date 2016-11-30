@@ -2,7 +2,7 @@ import classifier
 import features
 import sound
 import numpy as np
-import pylab as pl
+from matplotlib import pylab as pl
 import scipy.signal
 
 class TimeSpan(object):   

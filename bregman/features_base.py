@@ -1,4 +1,4 @@
-import pylab as P
+from matplotlib import pylab as P
 import error
 import glob
 import plca

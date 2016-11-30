@@ -15,7 +15,7 @@ __copyright__ = "Copyright (C) 2010  Michael Casey, Dartmouth College, All Right
 __license__ = "GPL Version 2.0 or Higher"
 __email__ = 'mcasey@dartmouth.edu'
 
-import pylab
+from matplotlib import pylab
 import scipy.signal
 
 TWO_PI = 2.0 * pylab.pi
