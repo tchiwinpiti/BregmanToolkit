@@ -14,6 +14,7 @@ from pylab import *
 # Examples of using the Features base class to extract features
 # and the derived helper classes to extract the same features.
 
+
 def ex_1a(x):
     """
     Example 1a: magnitude STFT analysis of audio file
@@ -22,7 +23,7 @@ def ex_1a(x):
     """
     # LinearFrequencySpectrum helper class
     F = LinearFrequencySpectrum(x, nfft=16384, wfft=8192, nhop=2205)
-    F.feature_plot(dbscale=True, normalize=True)    
+    F.feature_plot(dbscale=True, normalize=True)
 
     ## Alternate extraction method
     ## Same feature extractor using base class and parameter dict
@@ -37,6 +38,7 @@ def ex_1a(x):
     ## Same feature extractor using base class and alternate parameter dict method    
     # F = Features(x, {'feature':'stft', 'nfft':16384, 'wfft':8192, 'nhop':2205} )
     return F
+
 
 def ex_1b(x):
     """
@@ -63,6 +65,7 @@ def ex_1b(x):
     # F = Features(x, {'feature':'stft', 'nfft':256, 'wfft':256, 'nhop':256} )
     return F
 
+
 def ex_1c(x):
     """
     Example 1c: magnitude STFT analysis of audio file
@@ -85,6 +88,7 @@ def ex_1c(x):
     # F = Features(x, {'feature':'stft', 'nfft':1024, 'wfft':512, 'nhop':512} )
     return F
 
+
 def ex_2a(x):
     """
     Example 2a: constant-Q magnitude analysis of audio file    
@@ -106,7 +110,8 @@ def ex_2a(x):
 
     ## Alternate extraction method 2
     # F = Features(x, {'feature':'stft', 'nfft':16384, 'wfft':8192, 'nhop':2205, 'nbpo':12})
-    return F 
+    return F
+
 
 def ex_3a(x):
     """
@@ -129,7 +134,8 @@ def ex_3a(x):
 
     ## Alternate 2
     # F = Features(x, {'feature':'chroma', 'nfft':16384, 'wfft':8192, 'nhop':2205, 'nbpo':12})
-    return F 
+    return F
+
 
 def ex_4a(x):
     """
@@ -139,7 +145,8 @@ def ex_4a(x):
     F = LogFrequencyCepstrum(x, nhop=2205)
     F.feature_plot(normalize=True)
     title('Mel-Frequency Cepstral Coefficients')
-    return F 
+    return F
+
 
 def ex_4b(x):
     """
@@ -149,11 +156,12 @@ def ex_4b(x):
     F = LowQuefrencyLogFrequencySpectrum(x, nhop=2205)
     F.feature_plot(dbscale=True, normalize=True)
     title('Low-Quefrency Log-Frequency Spectrum')
-    return F 
+    return F
 
 
 if __name__ == "__main__":
-    audio_file = os.path.split(bregman.__file__)[0]+os.sep+'audio'+os.sep+'gmin.wav'
+    audio_file = os.path.split(bregman.__file__)[
+        0] + os.sep + 'audio' + os.sep + 'gmin.wav'
 
     F1a = ex_1a(audio_file)
     F1b = ex_1b(audio_file)
@@ -162,5 +170,3 @@ if __name__ == "__main__":
     F3a = ex_3a(audio_file)
     F4a = ex_4a(audio_file)
     F4b = ex_4b(audio_file)
-
-    

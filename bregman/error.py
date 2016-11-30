@@ -6,7 +6,9 @@ __copyright__ = "Copyright (C) 2010  Michael Casey, Dartmouth College, All Right
 __license__ = "GPL Version 2.0 or Higher"
 __email__ = 'mcasey@dartmouth.edu'
 
+
 # Exception Handling class
 class BregmanError(Exception):
+
     def __init__(self, msg):
         print("Bregman error:", msg)

@@ -22,7 +22,8 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.pngmath']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.todo', 'sphinx.ext.coverage',
+              'sphinx.ext.pngmath']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -85,7 +86,6 @@ pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
-
 
 # -- Options for HTML output ---------------------------------------------------
 
@@ -160,7 +160,6 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'Bregmandoc'
 
-
 # -- Options for LaTeX output --------------------------------------------------
 
 # The paper size ('letter' or 'a4').
@@ -172,8 +171,8 @@ htmlhelp_basename = 'Bregmandoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Bregman.tex', u'Bregman Documentation',
-   u'Michael A. Casey', 'manual'),
+    ('index', 'Bregman.tex', u'Bregman Documentation', u'Michael A. Casey',
+     'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -193,11 +192,9 @@ latex_documents = [
 # If false, no module index is generated.
 #latex_use_modindex = True
 
-
 #autodoc_member_order [Added by mkc, 6/20/11]
 #
 #    This value selects if automatically documented members are sorted alphabetical (value 'alphabetical'), 
 # by member type (value 'groupwise') or by source order (value 'bysource'). The default is alphabetical.
 #Note that for source order, the module must be a Python module with the source code available.
 autodoc_member_order = "bysource"
-

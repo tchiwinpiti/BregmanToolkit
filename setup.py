@@ -25,21 +25,14 @@ setup(
     install_requires=[
         'matplotlib',
         'scipy',
-        ],
+    ],
     platforms=[
-        'OS X (any)',
-        'Linux (any)',
-        'Windows (any)'
-        ],
+        'OS X (any)', 'Linux (any)', 'Windows (any)'
+    ],
     packages=['bregman'],
     data_files=[
-        (
-            os.path.join('bregman', 'audio'),
-            glob.glob(os.path.join('bregman', 'audio', '*.wav'))
-            ),
-        (
-            os.path.join('bregman', 'examples'),
-            glob.glob(os.path.join('bregman', 'examples', '*.py')),
-            ),
-        ]
-    )
+        (os.path.join('bregman', 'audio'),
+         glob.glob(os.path.join('bregman', 'audio', '*.wav'))),
+        (os.path.join('bregman', 'examples'),
+         glob.glob(os.path.join('bregman', 'examples', '*.py')),),
+    ])

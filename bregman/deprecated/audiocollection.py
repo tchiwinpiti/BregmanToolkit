@@ -7,7 +7,6 @@ __copyright__ = "Copyright (C) 2010  Michael Casey, Dartmouth College, All Right
 __license__ = "gpl 2.0 or higher"
 __email__ = 'mcasey@dartmouth.edu'
 
-
 import os
 import os.path
 import time
@@ -20,12 +19,13 @@ import random
 import error
 import features
 
-try: # OSX / Linux
+try:  # OSX / Linux
     BREGMAN_ROOT = os.environ['HOME']
-except: # Windows
+except:  # Windows
     BREGMAN_ROOT = os.environ['HOMEPATH']
 
 DATA_ROOT = BREGMAN_ROOT + os.sep + "exp"
+
 
 class AudioCollection:
     """
@@ -45,7 +45,7 @@ class AudioCollection:
     collection_stem = "collection_"
 
     def __init__(self, path=None, root_path=DATA_ROOT):
-        self.root_path = root_path 
+        self.root_path = root_path
         self.collection_path = path
         self.adb_path = None
         self.adb = None
@@ -53,10 +53,11 @@ class AudioCollection:
         self.feature_params = features.Features.default_feature_params()
         self.audio_collection = set()
         self.cache_temporary_files = False
-        self.uid="%016X"%long(random.random()*100000000000000000L) # unique instance ID
-        self.old_uid=self.uid
-        self.adb_data_size=256
-        self.adb_ntracks=20000
+        self.uid = "%016X" % long(random.random() *
+                                  100000000000000000L)  # unique instance ID
+        self.old_uid = self.uid
+        self.adb_data_size = 256
+        self.adb_ntracks = 20000
 
     def insert_audio_files(self, audio_list):
         """
@@ -64,8 +65,9 @@ class AudioCollection:
 
             Maintain a set of audio files as a collection. Each item is unique in the set. Collisions are ignored.
         """
-        for item in audio_list: self.audio_collection.add(item)
-        
+        for item in audio_list:
+            self.audio_collection.add(item)
+
     def _gen_adb_hash(self):
         """
         ::
@@ -74,7 +76,7 @@ class AudioCollection:
         """
         m = hashlib.md5()
         k = self.feature_params.keys()
-        k.sort() # ensure vals ordered by key lexicographical order
+        k.sort()  # ensure vals ordered by key lexicographical order
         vals = [self.feature_params.get(i) for i in k]
         m.update(vals.__repr__())
         return m.hexdigest()
@@ -91,7 +93,7 @@ class AudioCollection:
                 Batch insert features, powers, linked to databse keys
                 Returns full path to audioDB instance if OK or None of not OK
         """
-        self._new_adb() # test to see if we require a new audiodb instance for features
+        self._new_adb()  # test to see if we require a new audiodb instance for features
         pth, sep, nm = self.adb_path.rpartition(os.sep)
         # List names for audioDB insertion
         fListName = pth + os.sep + self.uid + "_fList.txt"
@@ -104,25 +106,31 @@ class AudioCollection:
         self._write_list_to_file(pList, pListName)
         self._write_list_to_file(kList, kListName)
         # do BATCHINSERT
-        command = ["audioDB", "--BATCHINSERT", "-d", self.adb_path, "-F", fListName, "-W", pListName, "-K", kListName]
+        command = ["audioDB", "--BATCHINSERT", "-d", self.adb_path, "-F",
+                   fListName, "-W", pListName, "-K", kListName]
         self._do_subprocess(command)
         return 1
 
-    def _write_list_to_file(self,lst, pth):
+    def _write_list_to_file(self, lst, pth):
         """
         ::
 
             Utility routine to write a list of strings to a text file
         """
         try:
-            f = open(pth,"w")
+            f = open(pth, "w")
         except:
             print("Error opening: ", pth)
             raise error.BregmanError()
-        for s in lst: f.write(s+"\n") 
+        for s in lst:
+            f.write(s + "\n")
         f.close()
 
-    def extract_features(self, key=None, keyrepl=None, extract_only=False, wave_suffix=".wav"):
+    def extract_features(self,
+                         key=None,
+                         keyrepl=None,
+                         extract_only=False,
+                         wave_suffix=".wav"):
         """
         ::
 
@@ -139,12 +147,14 @@ class AudioCollection:
 
             Returns rTupleList of features,powers,keys or None if fail.
         """
-        aList, fList, pList, kList = self._get_extract_lists(key, keyrepl, wave_suffix)
-        self._fftextract_list(zip(aList,fList,pList,kList))
-        self.rTupleList = zip(fList,pList,kList) # what will be inserted into audioDB
+        aList, fList, pList, kList = self._get_extract_lists(key, keyrepl,
+                                                             wave_suffix)
+        self._fftextract_list(zip(aList, fList, pList, kList))
+        self.rTupleList = zip(fList, pList,
+                              kList)  # what will be inserted into audioDB
         if not extract_only:
-            self._insert_features_into_audioDB() # possibly generate new audiodb instance
-        self.audio_collection.clear() # clear the audio_collection queue
+            self._insert_features_into_audioDB()  # possibly generate new audiodb instance
+        self.audio_collection.clear()  # clear the audio_collection queue
         return self.rTupleList
 
     def _get_extract_lists(self, key=None, keyrepl=None, wave_suffix=".wav"):
@@ -158,15 +168,15 @@ class AudioCollection:
         aList.sort()
         # The keys that will identify managed items
         if key == None:
-            kList = aList # use the audio file names as keys
+            kList = aList  # use the audio file names as keys
         else:
             # replace keyrepl with key as database key
-            if not keyrepl: 
+            if not keyrepl:
                 print("key requires keyrepl for filename substitution")
                 raise error.BregmanError()
-            kList = [a.replace(keyrepl,key) for a in aList]
-        feature_suffix= self._get_feature_suffix()
-        power_suffix=self.feature_params['power_ext']
+            kList = [a.replace(keyrepl, key) for a in aList]
+        feature_suffix = self._get_feature_suffix()
+        power_suffix = self.feature_params['power_ext']
         fList = [k.replace(wave_suffix, feature_suffix) for k in kList]
         pList = [k.replace(wave_suffix, power_suffix) for k in kList]
         return (aList, fList, pList, kList)
@@ -177,26 +187,32 @@ class AudioCollection:
         
             Return a standardized feature suffix for extracted features
         """
-        return "." + self.feature_params['feature'] + "%02d"%self.feature_params['ncoef']
+        return "." + self.feature_params[
+            'feature'] + "%02d" % self.feature_params['ncoef']
 
     def _fftextract_list(self, extract_list):
-        command=[]
-        feature_keys = {'stft':'-f', 'cqft':'-q', 'mfcc':'-m', 'chroma':'-c', 'power':'-P', 'hram':'-H'}
+        command = []
+        feature_keys = {'stft': '-f',
+                        'cqft': '-q',
+                        'mfcc': '-m',
+                        'chroma': '-c',
+                        'power': '-P',
+                        'hram': '-H'}
         feat = feature_keys[self.feature_params['feature']]
-        ncoef = "%d"%self.feature_params['ncoef']
-        nfft = "%d"%self.feature_params['nfft']
-        wfft = "%d"%self.feature_params['wfft']
-        nhop = "%d"%self.feature_params['nhop']
-        logl = "%d"%self.feature_params['log10']
-        mag = "%d"%self.feature_params['magnitude']
-        lo = "%f"%self.feature_params['lo']
-        hi = "%f"%self.feature_params['hi']
-#        lcoef = "%d"%self.feature_params['lcoef'] # not used yet        
-        for a,f,p,k in extract_list:
+        ncoef = "%d" % self.feature_params['ncoef']
+        nfft = "%d" % self.feature_params['nfft']
+        wfft = "%d" % self.feature_params['wfft']
+        nhop = "%d" % self.feature_params['nhop']
+        logl = "%d" % self.feature_params['log10']
+        mag = "%d" % self.feature_params['magnitude']
+        lo = "%f" % self.feature_params['lo']
+        hi = "%f" % self.feature_params['hi']
+        #        lcoef = "%d"%self.feature_params['lcoef'] # not used yet
+        for a, f, p, k in extract_list:
             if not len(glob.glob(f)):
-                command=["fftExtract", "-p", "bregman.wis", 
-                         "-n", nfft, "-w", wfft, "-h", nhop, feat, ncoef, 
-                         "-l", lo, "-i", hi, "-g" , logl, "-a", mag, a, f]
+                command = ["fftExtract", "-p", "bregman.wis", "-n", nfft, "-w",
+                           wfft, "-h", nhop, feat, ncoef, "-l", lo, "-i", hi,
+                           "-g", logl, "-a", mag, a, f]
                 ret = self._do_subprocess(command)
                 if ret:
                     print("Error extacting features: ", command)
@@ -204,9 +220,8 @@ class AudioCollection:
             else:
                 print("Warning: feature file already exists", f)
             if not len(glob.glob(p)):
-                command=["fftExtract", "-p", "bregman.wis", 
-                         "-n", nfft, "-w", wfft, "-h", nhop, 
-                         "-P", "-l", lo, "-i", hi, a, p]
+                command = ["fftExtract", "-p", "bregman.wis", "-n", nfft, "-w",
+                           wfft, "-h", nhop, "-P", "-l", lo, "-i", hi, a, p]
                 ret = self._do_subprocess(command)
                 if ret:
                     print("Error extacting powers: ", command)
@@ -219,12 +234,16 @@ class AudioCollection:
         ::
 
             Remove cached feature and power files based on current feature_params settings.        
-        """        
-        fList = glob.glob(self.collection_path+os.sep + "*" + key + "." 
-                             + self.feature_params['feature']+"%02d"%self.feature_params['ncoef'])
-        for f in fList: os.remove(f)
-        pList = glob.glob(self.collection_path + os.sep + "*" + key + self.feature_params["power_ext"] )
-        for p in pList: os.remove(p)
+        """
+        fList = glob.glob(self.collection_path + os.sep + "*" + key + "." +
+                          self.feature_params['feature'] + "%02d" %
+                          self.feature_params['ncoef'])
+        for f in fList:
+            os.remove(f)
+        pList = glob.glob(self.collection_path + os.sep + "*" + key +
+                          self.feature_params["power_ext"])
+        for p in pList:
+            os.remove(p)
 
     def initialize(self):
         """
@@ -235,7 +254,7 @@ class AudioCollection:
             Return False if an equivalent instance already exists.
             Return True if new instance was created.
         """
-        if not self._gen_collection_path(self.collection_stem): 
+        if not self._gen_collection_path(self.collection_stem):
             return 0
         print("Made new directory: ", self.collection_path)
         # self._new_adb() # This is now done on feature_insert
@@ -250,20 +269,22 @@ class AudioCollection:
         if not self.collection_path:
             print("Error: self.collection_path not set")
             raise error.BregmanError()
-        adb_path = self.collection_path + os.sep + self.collection_stem + self._gen_adb_hash() +".adb"
+        adb_path = self.collection_path + os.sep + self.collection_stem + self._gen_adb_hash(
+        ) + ".adb"
         return adb_path
-        
+
     def _gen_collection_path(self, name_prefix):
         """
         ::
 
             Make a new unique directory in the self.root_path directory
         """
-        self.collection_path = tempfile.mkdtemp(prefix=name_prefix,dir=self.root_path)
+        self.collection_path = tempfile.mkdtemp(
+            prefix=name_prefix, dir=self.root_path)
         if not self.collection_path:
             print("Error making new directory in location: ", self.root_path)
             return 0
-        shutil.copymode(self.root_path, self.collection_path) # set permissions
+        shutil.copymode(self.root_path, self.collection_path)  # set permissions
         return 1
 
     def _new_adb(self):
@@ -280,7 +301,7 @@ class AudioCollection:
         else:
             f = None
             try:
-                f = open(self.adb_path,"rb")
+                f = open(self.adb_path, "rb")
             except:
                 print("Making new audioDB database: ", self.adb_path)
             finally:
@@ -290,7 +311,8 @@ class AudioCollection:
                     return 0
 
         # create a NEW audiodb database instance
-        command = ["audioDB", "--NEW", "-d", self.adb_path, "--datasize", "%d"%self.adb_data_size, "--ntracks", "%d"%self.adb_ntracks]
+        command = ["audioDB", "--NEW", "-d", self.adb_path, "--datasize", "%d" %
+                   self.adb_data_size, "--ntracks", "%d" % self.adb_ntracks]
         self._do_subprocess(command)
 
         # make L2NORM compliant
@@ -302,7 +324,7 @@ class AudioCollection:
         self._do_subprocess(command)
         return 1
 
-    def _do_subprocess(self,command):
+    def _do_subprocess(self, command):
         """
         ::
 
@@ -338,12 +360,12 @@ class AudioCollection:
         """
         if collection_path == None:
             collection_path = self.collection_path
-        dlist=glob.glob(collection_path + os.sep + "*.data")
+        dlist = glob.glob(collection_path + os.sep + "*.data")
         toclist = []
         for d in dlist:
             self.load(d)
-            toclist.append(self.feature_params)        
-        return zip(dlist,toclist)
+            toclist.append(self.feature_params)
+        return zip(dlist, toclist)
 
     @classmethod
     def lc(cls, expand=False, limit=None):
@@ -367,11 +389,11 @@ class AudioCollection:
         if expand:
             R = cls()
             k = R.toc(dlist[0][0])
-            for d,t in dlist: 
+            for d, t in dlist:
                 print(d, t)
                 print(k[0][1].keys())
                 for i, v in enumerate(R.toc(d)):
-                    print("[%d]"%i, v[1].values())
+                    print("[%d]" % i, v[1].values())
                 print("")
         return dlist
 
@@ -380,9 +402,9 @@ class AudioCollection:
         dlist = glob.glob(DATA_ROOT + os.sep + cls.collection_stem + "*")
         # sort into descending order of time
         tm = {}
-        for d in dlist: tm[ d ] = os.path.getmtime( d )
-        dlist.sort( lambda x,y: cmp( tm[x], tm[y] ) )
+        for d in dlist:
+            tm[d] = os.path.getmtime(d)
+        dlist.sort(lambda x, y: cmp(tm[x], tm[y]))
         dlist.reverse()
         tm = [time.ctime(tm[d]) for d in dlist]
         return (dlist, tm)
-

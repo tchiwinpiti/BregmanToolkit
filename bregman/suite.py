@@ -1,4 +1,4 @@
-import os,sys,glob
+import os, sys, glob
 from matplotlib import pylab
 import bregman
 import os.path
@@ -30,17 +30,15 @@ from bregman import beat
 
 sep = os.path.sep
 bregman_data_root = os.path.split(bregman.__file__)[0]
-examples_dir = os.path.join(bregman_data_root,"examples"+sep)
-audio_dir = os.path.join(bregman_data_root,"audio"+sep)
+examples_dir = os.path.join(bregman_data_root, "examples" + sep)
+audio_dir = os.path.join(bregman_data_root, "audio" + sep)
 sys.path.append(examples_dir)
+
 
 def get_tutorials():
     """
     print and return a list of tutorials in the bregman/examples folder
     """
-    tlist = glob.glob(os.path.join(examples_dir,"*.py"))
+    tlist = glob.glob(os.path.join(examples_dir, "*.py"))
     tlist.sort()
     return tlist
-
-
-

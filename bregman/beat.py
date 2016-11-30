@@ -1,4 +1,3 @@
-
 from bregman.suite import *
 from scipy.signal import lfilter
 from pylab import zeros, where, diff, sqrt
@@ -29,7 +28,7 @@ def beat_track(x, feature=LogFrequencySpectrum, **kwargs):
     z = zeros((len(tempos), D.shape[0]))
     for i, bpm in enumerate(tempos):  # loop over tempos to test
         t = int(round(frame_rate * 60. / bpm))  # num frames per beat
-        alpha = 0.5**(2.0/t)
+        alpha = 0.5**(2.0 / t)
         b = [1 - alpha]
         a = zeros(t)
         a[0] = 1.0
