@@ -42,9 +42,9 @@ class Evaluator:
                tempo OR tempo_range - tempo/tempi over which to search
         """
         if not adb:
-            print "You must supply a valid audioDB database instance"
+            print("You must supply a valid audioDB database instance")
         if not ground_truth:
-            print "You must supply a ground truth as a list of database indices"
+            print("You must supply a ground truth as a list of database indices")
         self.adb=None
         self.ground_truth=None
         self.set_adb(adb)
@@ -124,9 +124,9 @@ class Evaluator:
             Print the mean rank between query runs (at each tempo) and by pure distance
         """
         if self.ranks_by_rank !=None:
-            print "Mean Rank by Minimum Rank = ", self.ranks_by_rank.mean()
+            print("Mean Rank by Minimum Rank = ", self.ranks_by_rank.mean())
         if self.ranks_by_dists !=None:
-            print "Mean Rank by Distance = ", self.ranks_by_dists.mean()
+            print("Mean Rank by Distance = ", self.ranks_by_dists.mean())
 
     def evaluate(self, seq_length=None, query_duration=None, tempo=1.0, gt_only=True):
         """ 
@@ -184,7 +184,7 @@ class Evaluator:
         out_ranks = []
         out_dists = []
         for t in tempo_range:
-            print "Evaluating tempo: ", t
+            print("Evaluating tempo: ", t)
             # perform full evaluation, gt_only=False, for across-tempo merged ranks of gt in db results
             ranks, dists = self.evaluate(query_duration=query_duration, tempo=t, gt_only=False)
             out_ranks.append(ranks)
@@ -221,7 +221,7 @@ class Evaluator:
         if query_duration:
             seq_length = int( pylab.around( query_duration / self.adb.delta_time ) )
         if not seq_length:
-            print "ERROR: You must specify a sequence length or query_duration"
+            print("ERROR: You must specify a sequence length or query_duration")
             raise
         return seq_length
 
@@ -255,14 +255,14 @@ class Evaluator:
             seq_lower_bound=int(pylab.around(seq_length/tempo))
         else:
             seq_lower_bound=seq_length
-        print "sequence-lower-bound = ", seq_lower_bound
+        print("sequence-lower-bound = ", seq_lower_bound)
         gt_orig_keys, gt_orig_len = self.get_gt_lists()
         gt_orig = zip(gt_orig_keys, gt_orig_len)
         gt_list_keys, gt_list_len = self.lower_bound_list_by_length(gt_orig, seq_lower_bound, tempo)
         gt_list = zip(gt_list_keys, gt_list_len)
-        print "GT query / retrieval list length = ", len(gt_list_keys)
+        print("GT query / retrieval list length = ", len(gt_list_keys))
         excl_keys, excl_lengths = self.upper_bound_list_by_length(self.adb.liszt(), seq_lower_bound)
-        print "Database exclude list length = ", len(excl_keys)
+        print("Database exclude list length = ", len(excl_keys))
         if len(excl_keys):
             self.adb.configQuery['excludeKeys']=list(excl_keys)
         else:
@@ -275,7 +275,7 @@ class Evaluator:
         self.adb.configQuery['ntracks']=len(self.adb.liszt())
         self.adb.configQuery['npoints']=1
         if not self.adb.configCheck():
-            print "Invalid query configuartion"
+            print("Invalid query configuartion")
             raise    
         return gt_list, gt_orig
 
@@ -397,7 +397,7 @@ class TimbreChannelEvaluator(Evaluator):
         adb.configQuery['includeKeys']=includeKeys # include the non GT_ITEMs in search
         adb.configQuery['excludeKeys']=[] #excludeKeys # exclude the GT_ITEM from search
         if not self.adb.configCheck():
-            print "Invalid query configuartion"
+            print("Invalid query configuartion")
             raise    
         return gt_list, gt_orig
         
@@ -432,9 +432,9 @@ class TimbreChannelEvaluator(Evaluator):
             t_ikeys=[]
             t_rkeys=[]
             t_dists=[]
-            print "Evaluating gt_item: ", gt_item
+            print("Evaluating gt_item: ", gt_item)
             for t_chan in range( self.timbre_channels ):
-                print "\tc ", t_chan
+                print("\tc ", t_chan)
                 qkey = qkeys[t_chan::self.timbre_channels][gt_item] # gt query timbre-channel key
                 qlen = qlens[t_chan::self.timbre_channels][gt_item] # gt query timbre-channel len
                 t_qkeys.append(qkey)
@@ -446,7 +446,7 @@ class TimbreChannelEvaluator(Evaluator):
                     t_rkeys.append(rkeys) # timbre-channel distance-sorted keys
                     t_dists.append(dst) # All result distances
                 else:
-                    print "Empty result list: ", qkey
+                    print("Empty result list: ", qkey)
                     raise error.BregmanError()
             avg_ranks, avg_dists = self.rank_by_distance_avg(t_qkeys, t_ikeys, t_rkeys, t_dists)
             bhatt_ranks, bhatt_dists = self.rank_by_distance_bhatt(t_qkeys, t_ikeys, t_rkeys, t_dists)
@@ -486,7 +486,7 @@ class TimbreChannelEvaluator(Evaluator):
                     else:
                         rdists[a_idx] = dists[t_chan][i_idx]
                 except:
-                    print "Key not found in result list: ", ikey, "for query:", qkeys[t_chan]
+                    print("Key not found in result list: ", ikey, "for query:", qkeys[t_chan])
                     raise error.BregmanError()
         #search for the index of the relevant keys
         rdists = pylab.absolute(rdists)
@@ -519,7 +519,7 @@ class TimbreChannelEvaluator(Evaluator):
                     # distance is Bhattacharyya distance on probs and dists
                     dk[t_chan] = dists[t_chan][i_idx]
                 except:
-                    print "Key not found in result list: ", ikey, "for query:", qkeys[t_chan]
+                    print("Key not found in result list: ", ikey, "for query:", qkeys[t_chan])
                     raise error.BregmanError()
             rk = self._get_probs_tc(ikey)
             a_idx = t_keys.index( ikey[0] ) # audiodb include-key index

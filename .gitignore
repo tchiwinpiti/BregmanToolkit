@@ -39,3 +39,4 @@ nosetests.xml
 
 # Misc.
 .DS_Store
+*.bak

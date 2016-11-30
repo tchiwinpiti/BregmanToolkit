@@ -416,7 +416,7 @@ class LinearFrequencyModulationPowerSpectrum(Features):
             fp = self.feature_params
             num_frames = int((window*fp['sample_rate'])/(1000.0*fp['nhop']))
             num_hop = int((hop*fp['sample_rate'])/(1000.0*fp['nhop']))
-            print num_frames, num_hop
+            print(num_frames, num_hop)
             if not num_frames and num_hop :
                 raise ValueError("num_frames and num_hop too small for FFT window / hop")
             else :
